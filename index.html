@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Boma Search - Find verified rental homes across Kenya.">
+<title>Boma Search - Find Your Perfect Home</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{font-family:Inter,sans-serif}.modal{display:none}.modal.show{display:flex}
+.card-img{height:210px;object-fit:cover}.toast{transform:translateY(120px);transition:.3s}.toast.show{transform:translateY(0)}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+<header class="bg-gray-950 text-white sticky top-0 z-40 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-2">
+      <span class="bg-emerald-700 p-2 rounded-lg text-xl">🏠</span>
+      <span class="font-black tracking-tight">BOMA SEARCH</span>
+    </a>
+    <nav class="hidden md:flex gap-7 text-sm font-medium">
+      <a href="#home" class="hover:text-emerald-300">Home</a>
+      <a href="#houses" class="hover:text-emerald-300">Houses</a>
+      <a href="#landlords" class="hover:text-emerald-300">Landlords</a>
+      <a href="#pricing" class="hover:text-emerald-300">Pricing</a>
+      <a href="#about" class="hover:text-emerald-300">About Us</a>
+      <a href="#contact" class="hover:text-emerald-300">Contact</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button id="loginBtn" class="hidden sm:block px-4 py-2 hover:text-emerald-300">Login</button>
+      <button id="signupBtn" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2.5 rounded-lg font-semibold">Sign Up</button>
+    </div>
+  </div>
+</header>
+
+<section id="home" class="relative bg-gray-900 text-white py-24 px-4">
+  <div class="absolute inset-0 opacity-35"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80" class="w-full h-full object-cover"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-gray-950"></div>
+  <div class="relative max-w-5xl mx-auto text-center">
+    <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Find Your Perfect Home</h1>
+    <p class="text-lg md:text-xl text-gray-200 mb-10">Search verified rental homes across Kenya. Easy. Fast. Reliable.</p>
+    <div class="bg-white text-gray-800 rounded-2xl shadow-2xl p-4 text-left">
+      <form id="searchForm" class="grid md:grid-cols-4 gap-3">
+        <div class="border rounded-xl px-4 py-3 bg-gray-50">
+          <label class="block text-xs font-bold text-gray-500 uppercase">Location</label>
+          <input id="searchLocation" class="w-full bg-transparent outline-none text-sm" placeholder="e.g. Nairobi, Thika">
+        </div>
+        <div class="border rounded-xl px-4 py-3 bg-gray-50">
+          <label class="block text-xs font-bold text-gray-500 uppercase">House Type</label>
+          <select id="searchType" class="w-full bg-transparent outline-none text-sm">
+            <option value="">Any type</option><option>Bedsitter</option><option>1 Bedroom</option><option>2 Bedroom</option><option>3 Bedroom</option>
+          </select>
+        </div>
+        <div class="border rounded-xl px-4 py-3 bg-gray-50">
+          <label class="block text-xs font-bold text-gray-500 uppercase">Max Price</label>
+          <input id="searchPrice" type="number" min="0" class="w-full bg-transparent outline-none text-sm" placeholder="KES">
+        </div>
+        <button class="bg-emerald-800 hover:bg-emerald-900 text-white rounded-xl font-semibold px-5 py-3">🔎 Search Houses</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="houses" class="max-w-7xl mx-auto px-4 py-16">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div><h2 class="text-3xl font-bold">Available Houses</h2><p id="resultCount" class="text-gray-500 text-sm mt-1"></p></div>
+    <select id="sortSelect" class="border rounded-lg px-3 py-2 bg-white"><option value="new">Newest</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option></select>
+  </div>
+  <div id="listingGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+  <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border"><div class="text-4xl mb-3">🏠</div><h3 class="font-bold text-xl">No houses found</h3><p class="text-gray-500">Try another location, house type or price.</p></div>
+</section>
+
+<section id="landlords" class="bg-emerald-950 text-white py-16">
+  <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
+    <div><span class="text-emerald-300 font-bold uppercase text-xs">For landlords</span><h2 class="text-3xl font-extrabold mt-2">Ready to List Your Property?</h2><p class="text-emerald-100 mt-2">Create an account and publish your available houses.</p></div>
+    <button id="listPropertyBtn" class="bg-white text-emerald-950 font-bold px-7 py-3.5 rounded-xl">List Your Property</button>
+  </div>
+</section>
+
+<section id="pricing" class="max-w-7xl mx-auto px-4 py-16">
+  <h2 class="text-3xl font-bold text-center mb-10">Simple Pricing</h2>
+  <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+    <div class="bg-white p-7 rounded-2xl border shadow-sm"><h3 class="font-bold text-xl">House Listing</h3><p class="text-gray-500 mt-2">Publish your available property and reach tenants searching on Boma Search.</p><div class="text-emerald-700 font-black text-3xl mt-5">From KES 1,000</div></div>
+    <div class="bg-white p-7 rounded-2xl border shadow-sm"><h3 class="font-bold text-xl">Tenant Search</h3><p class="text-gray-500 mt-2">Search listings by location, house type and budget.</p><div class="text-emerald-700 font-black text-3xl mt-5">KES 500</div></div>
+  </div>
+</section>
+
+<section id="about" class="bg-white py-16">
+  <div class="max-w-4xl mx-auto px-4 text-center"><span class="text-emerald-700 font-bold uppercase text-xs">About Boma Search</span><h2 class="text-3xl font-extrabold mt-2">Making Your Home Search Simple</h2><p class="text-gray-600 mt-5 leading-relaxed">Boma Search connects tenants with landlords and rental homes across Kenya. Search by location, property type and budget, then contact the listing owner directly.</p></div>
+</section>
+
+<footer id="contact" class="bg-gray-950 text-gray-300 py-10">
+  <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between gap-5">
+    <div><div class="text-white font-black text-lg">🏠 BOMA SEARCH</div><p class="text-sm mt-2">Find your perfect home in Kenya.</p></div>
+    <div class="text-sm"><div class="font-bold text-white mb-2">Contact</div><p>Email: info@bomasearch.co.ke</p><p>Kenya</p></div>
+  </div>
+</footer>
+
+<!-- Listing modal -->
+<div id="listingModal" class="modal fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-auto">
+    <div class="flex justify-between items-center mb-5"><h2 class="text-2xl font-bold">List Your Property</h2><button data-close="listingModal" class="text-2xl">×</button></div>
+    <form id="listingForm" class="space-y-4">
+      <input required id="ownerName" class="w-full border rounded-lg p-3" placeholder="Landlord name">
+      <input required id="propertyTitle" class="w-full border rounded-lg p-3" placeholder="Property title">
+      <input required id="propertyLocation" class="w-full border rounded-lg p-3" placeholder="Location e.g. Ruiru, Kiambu">
+      <select required id="propertyType" class="w-full border rounded-lg p-3"><option value="">House type</option><option>Bedsitter</option><option>1 Bedroom</option><option>2 Bedroom</option><option>3 Bedroom</option></select>
+      <input required id="propertyPrice" type="number" min="1" class="w-full border rounded-lg p-3" placeholder="Monthly rent (KES)">
+      <input id="propertyImage" class="w-full border rounded-lg p-3" placeholder="Image URL (optional)">
+      <textarea id="propertyDescription" class="w-full border rounded-lg p-3" rows="3" placeholder="Short description"></textarea>
+      <button class="w-full bg-emerald-700 text-white py-3 rounded-lg font-bold">Publish House</button>
+    </form>
+  </div>
+</div>
+
+<!-- Auth modal -->
+<div id="authModal" class="modal fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-md w-full p-6">
+    <div class="flex justify-between items-center mb-5"><h2 id="authTitle" class="text-2xl font-bold">Create Account</h2><button data-close="authModal" class="text-2xl">×</button></div>
+    <div class="flex gap-2 mb-5"><button id="tabSignup" class="flex-1 bg-emerald-100 text-emerald-800 py-2 rounded-lg font-semibold">Sign Up</button><button id="tabLogin" class="flex-1 bg-gray-100 py-2 rounded-lg font-semibold">Login</button></div>
+    <form id="authForm" class="space-y-4">
+      <input id="authName" required class="w-full border rounded-lg p-3" placeholder="Full name">
+      <input id="authEmail" required type="email" class="w-full border rounded-lg p-3" placeholder="Email">
+      <input id="authPhone" class="w-full border rounded-lg p-3" placeholder="Phone number">
+      <input id="authPassword" required type="password" class="w-full border rounded-lg p-3" placeholder="Password">
+      <button id="authSubmit" class="w-full bg-emerald-700 text-white py-3 rounded-lg font-bold">Create Account</button>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast fixed bottom-5 left-1/2 -translate-x-1/2 z-[60] bg-gray-900 text-white px-5 py-3 rounded-xl shadow-xl text-sm"></div>
+
+<script>
+const seedListings=[
+{id:1,title:"1 Bedroom Apartment",location:"Kilimani, Nairobi",type:"1 Bedroom",price:28000,image:"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80",description:"Modern one-bedroom apartment in a convenient location.",owner:"Boma Search"},
+{id:2,title:"2 Bedroom Apartment",location:"Westlands, Nairobi",type:"2 Bedroom",price:45000,image:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",description:"Spacious two-bedroom apartment.",owner:"Boma Search"},
+{id:3,title:"Bedsitter",location:"Thika Road, Nairobi",type:"Bedsitter",price:15000,image:"https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80",description:"Affordable bedsitter near transport and amenities.",owner:"Boma Search"},
+{id:4,title:"3 Bedroom Apartment",location:"Kileleshwa, Nairobi",type:"3 Bedroom",price:65000,image:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",description:"Comfortable three-bedroom family apartment.",owner:"Boma Search"}
+];
+const defaultImage="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80";
+let listings=JSON.parse(localStorage.getItem("bomaListings")||"null")||seedListings;
+let users=JSON.parse(localStorage.getItem("bomaUsers")||"[]");
+let favourites=JSON.parse(localStorage.getItem("bomaFavourites")||"[]");
+let searchState={location:"",type:"",price:""};
+
+function save(){localStorage.setItem("bomaListings",JSON.stringify(listings));localStorage.setItem("bomaUsers",JSON.stringify(users));localStorage.setItem("bomaFavourites",JSON.stringify(favourites))}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2600)}
+function openModal(id){document.getElementById(id).classList.add("show")}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+
+function render(){
+ let a=listings.filter(x=>
+   x.location.toLowerCase().includes(searchState.location.toLowerCase()) &&
+   (!searchState.type||x.type===searchState.type) &&
+   (!searchState.price||x.price<=Number(searchState.price))
+ );
+ const sort=document.getElementById("sortSelect").value;
+ if(sort==="low")a.sort((x,y)=>x.price-y.price); if(sort==="high")a.sort((x,y)=>y.price-x.price);
+ const grid=document.getElementById("listingGrid"); grid.innerHTML="";
+ document.getElementById("resultCount").textContent=`${a.length} house${a.length===1?"":"s"} found`;
+ document.getElementById("emptyState").classList.toggle("hidden",a.length!==0);
+ a.forEach(x=>{
+  const fav=favourites.includes(x.id);
+  const card=document.createElement("article");
+  card.className="bg-white rounded-2xl shadow-sm border overflow-hidden hover:shadow-md transition";
+  card.innerHTML=`<div class="relative"><img src="${x.image||defaultImage}" onerror="this.src='${defaultImage}'" class="w-full card-img" alt="${x.title}"><span class="absolute top-3 left-3 bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded-md">FOR RENT</span><button class="fav absolute top-3 right-3 bg-white/90 p-2 rounded-full shadow">${fav?"❤️":"🤍"}</button></div><div class="p-5"><h3 class="font-bold text-lg">${x.title}</h3><p class="text-gray-500 text-sm mt-1">📍 ${x.location}</p><div class="text-emerald-700 font-extrabold text-lg mt-3">KES ${Number(x.price).toLocaleString()} <span class="text-xs font-normal text-gray-500">/ month</span></div><p class="text-gray-500 text-sm mt-2 line-clamp-2">${x.description||""}</p><div class="flex gap-2 mt-4"><button class="details flex-1 bg-emerald-700 text-white py-2 rounded-lg font-semibold text-sm">View Details</button><button class="contact border border-emerald-700 text-emerald-700 px-3 rounded-lg">Contact</button></div></div>`;
+  card.querySelector(".fav").onclick=()=>{favourites=favourites.includes(x.id)?favourites.filter(i=>i!==x.id):[...favourites,x.id];save();render()};
+  card.querySelector(".details").onclick=()=>alert(`${x.title}\n\nLocation: ${x.location}\nRent: KES ${Number(x.price).toLocaleString()} / month\nLandlord: ${x.owner}\n\n${x.description||""}`);
+  card.querySelector(".contact").onclick=()=>toast("Contact details can be connected to your phone/WhatsApp backend.");
+  grid.appendChild(card);
+ });
+}
+document.getElementById("searchForm").onsubmit=e=>{e.preventDefault();searchState={location:document.getElementById("searchLocation").value,type:document.getElementById("searchType").value,price:document.getElementById("searchPrice").value};render();document.getElementById("houses").scrollIntoView({behavior:"smooth"})};
+document.getElementById("sortSelect").onchange=render;
+
+let signupMode=true;
+function authMode(signup){signupMode=signup;document.getElementById("authTitle").textContent=signup?"Create Account":"Login";document.getElementById("authSubmit").textContent=signup?"Create Account":"Login";document.getElementById("authName").style.display=signup?"block":"none";document.getElementById("authPhone").style.display=signup?"block":"none"}
+document.getElementById("signupBtn").onclick=()=>{authMode(true);openModal("authModal")};
+document.getElementById("loginBtn").onclick=()=>{authMode(false);openModal("authModal")};
+document.getElementById("tabSignup").onclick=()=>authMode(true);
+document.getElementById("tabLogin").onclick=()=>authMode(false);
+document.getElementById("authForm").onsubmit=e=>{
+ e.preventDefault(); const email=authEmail.value.trim().toLowerCase(), pass=authPassword.value;
+ if(signupMode){if(users.some(u=>u.email===email))return toast("An account with that email already exists.");users.push({name:authName.value,email,phone:authPhone.value,password:pass});save();toast("Account created successfully.");closeModal("authModal")}
+ else{const u=users.find(x=>x.email===email&&x.password===pass);if(!u)return toast("Incorrect email or password.");toast(`Welcome back, ${u.name}!`);closeModal("authModal")}
+};
+
+document.getElementById("listPropertyBtn").onclick=()=>openModal("listingModal");
+document.getElementById("listingForm").onsubmit=e=>{
+ e.preventDefault();
+ const l={id:Date.now(),title:propertyTitle.value.trim(),location:propertyLocation.value.trim(),type:propertyType.value,price:Number(propertyPrice.value),image:propertyImage.value.trim()||defaultImage,description:propertyDescription.value.trim(),owner:ownerName.value.trim()};
+ listings.unshift(l);save();render();closeModal("listingModal");e.target.reset();toast("House published successfully.");document.getElementById("houses").scrollIntoView({behavior:"smooth"})
+};
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.onclick=e=>{const el=document.querySelector(a.getAttribute("href"));if(el){e.preventDefault();el.scrollIntoView({behavior:"smooth"})}});
+render();
+</script>
+</body>
+</html>
